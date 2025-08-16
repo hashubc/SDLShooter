@@ -23,6 +23,9 @@ set(TARGET ${PROJECT_NAME}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_TYPE})
 # 跨平台的简单写法
 # 查找并载入预设
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 # if (WIN32)
 #     include_directories("C:/SDL2/include")
@@ -37,7 +40,14 @@ find_package(SDL2 REQUIRED)
 # endif()
 
 # 添加可执行文件
-add_executable(${TARGET} main.cpp)
+add_executable(${TARGET} 
+                "src/main.cpp"
+                "src/Game.cpp"
+                "src/SceneMain.cpp")
 
 # 链接库
-target_link_libraries(${TARGET} ${SDL2_LIBRARIES})
+target_link_libraries(${TARGET} 
+                        ${SDL2_LIBRARIES} 
+                        SDL2_image::SDL2_image
+                        SDL2_mixer::SDL2_mixer
+                        SDL2_ttf::SDL2_ttf)
