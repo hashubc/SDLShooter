@@ -7,8 +7,9 @@
 
 int main(int, char**)
 {
-    Game game;
+    Game& game = Game::getInstance();
     game.init();
     game.run();
+    
     return 0;
 }
