@@ -19,7 +19,7 @@ public:
     void changeScene(Scene* scene);
 
     void handleEvent(SDL_Event* event);
-    void update();
+    void update(float deltaTime);
     void render();
 
     SDL_Window* getWindow() { return window; }
@@ -38,6 +38,10 @@ private:
     SDL_Renderer* renderer = nullptr;
     int windowWidth = 600;
     int windowHeight = 800;
+
+    int FPS = 60;            // 目标帧率
+    Uint32 frameTime;        // 每帧的目标时间（毫秒）
+    float deltaTime;         // 两帧之间的时间差（秒）
 };
 
 #endif

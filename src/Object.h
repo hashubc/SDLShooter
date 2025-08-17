@@ -9,6 +9,7 @@ struct Player
     SDL_Point position = {0, 0};
     int width = 0;
     int height = 0;
+    int speed = 200;  // 每秒移动200像素
 };
 
 #endif

@@ -14,6 +14,8 @@ Game::~Game()
 
 void Game::init()
 {
+    // 将目标帧率设为60FPS（frameTime = 1000 / FPS毫秒），这是大多数游戏的标准帧率。
+    frameTime = 1000 / FPS;
     // SDL 初始化
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -45,12 +47,24 @@ void Game::run()
 {
     while (isRunning)
     {
+        auto frameStart = SDL_GetTicks();  // 记录帧开始时间
+
         SDL_Event event;
         handleEvent(&event);
-
-        update();
-
+        update(deltaTime);
         render();
+
+        auto frameEnd = SDL_GetTicks();  // 记录帧结束时间
+        auto diff = frameEnd - frameStart;  // 计算帧处理时间
+        
+        // 帧率限制和deltaTime计算
+        if (diff < frameTime) {
+            SDL_Delay(frameTime - diff);  // 如果处理太快，延迟一下
+            deltaTime = frameTime / 1000.0f;  // 转换为秒
+        }
+        else {
+            deltaTime = diff / 1000.0f;  // 如果处理较慢，使用实际时间
+        }
     }
 }
 
@@ -91,9 +105,9 @@ void Game::handleEvent(SDL_Event *event)
     }
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
-    currentScene->update();
+    currentScene->update(deltaTime); // 传递deltaTime给当前场景
 }
 
 void Game::render()
